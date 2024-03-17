@@ -1,112 +1,48 @@
-// scripts.js
+// Get a reference to the table body
+const tableBody = document.querySelector('[data-content]');
 
-const MONTHS = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-]
+// Get the current date
+const currentDate = new Date();
+const currentDay = currentDate.getDate();
 
-const getDaysInMonth = (date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+// Define the number of weeks and days in a week
+const weeks = 5; // You can adjust this as needed
+const daysPerWeek = 7;
 
-// Only edit below 
+// Create rows for each week
+for (let week = 1; week <= weeks; week++) {
+    const row = document.createElement('tr');
 
+    // Create the week cell
+    const weekCell = document.createElement('td');
+    weekCell.textContent = `Week ${week}`;
+    row.appendChild(weekCell);
 
-const createArray = (length) => {
-    const result = []
+    // Create cells for each day (starting from Sunday)
+    for (let day = 0; day < daysPerWeek; day++) {
+        const cell = document.createElement('td');
+        cell.classList.add('table__cell');
 
-    for (let i = 0; i < length; i++) {
-        result.push(0)
-    }
+        // Calculate the day number based on the week and day
+        const dayNumber = (week - 1) * daysPerWeek + day + 1;
 
-    return result
-}
-
- const createData = () => {
-    const current = new Date()
-    current.setDate(1);
-
-    const startDay = current.get()
-    const daysInMonth = getDaysInMonth(current)
-
-    const weeks = createArray(5);
-    const days =(7);
-    const result = []
-
-    for (const weekIndex of weeks) {
-        result.push({
-            week: weekIndex + 1,
-            days: []
-        })
-
-        for (const dayIndex=0; dayIndex<7; dayIndex++) {
-            const day = (dayIndex - startDay) + (weekIndex * 7) + 1
-            const isValid = day > 0 && day <= daysInMonth
-
-            result[weekIndex].days.push({
-                dayOfWeek: dayIndex + 1,
-                value: isValid ? day : '',
-            })
-        }
-    }
-
-    return result
-}
-
-const addCell = (existing, classString, value) => {
-    const result = /* html */`
-        ${existing}
-
-        <td class="${classString}">
-            &nbsp;${value}&nbsp;
-        </td>
-    `
-
-    return result
-}
-
-   const createHtml = (data) => {
-    let result = ''
-
-    for (const { week, days} of result) {
-       let inner = ""
-    inner = addCell(inner, 'table__cell table__cell_sidebar', `Week ${week}`)
-    
-        for (const { dayOfWeek, value } of days) {
-            const isToday = new Date().getDate() === value;
-            const isWeekend = dayOfWeek ===  0 || dayOfWeek === 6; 
-            const isAlternate = week % 2 === 0
-            
-						let classString = 'table__cell'
-
-            if (isToday) classString = `${isToday} table__cell_`;
-            if (isWeekend) classString = `${isWeekend} table__cell_`;
-            if (isAlternate) classString = `${isAlternate} table__cell_`;
-            inner = addCell()
+        // Set the content for each cell (populate all days)
+        if (dayNumber <= 31) {
+            cell.textContent = dayNumber.toString();
+            if (dayNumber === currentDay) {
+                cell.classList.add('table__cell_today');
+            }
         }
 
-        result = `
-            ${result}
-            <tr>${inner}</tr>
-        `
+        // Append the cell to the row
+        row.appendChild(cell);
     }
-    
-    return result
+
+    // Append the row to the table body
+    tableBody.appendChild(row);
 }
 
+// Set the title once the content is loaded
+document.querySelector('[data-title]').textContent = 'March 2024';
 
-// Only edit above
 
-const current = new Date()
-document.querySelector('[data-title]').innerText = `${MONTHS[current.getMonth()]} ${current.getFullYear()}`
-
-const data = createData()
-document.querySelector('[data-content]').innerHTML = createHtml(data)
