@@ -24,7 +24,7 @@ const createArray = (length) => {
     const result = []
 
     for (let i = 0; i < length; i++) {
-        result.push(0)
+        result.push(i)
     }
 
     return result
@@ -80,9 +80,9 @@ const addCell = (existing, classString, value) => {
        let inner = "";
     inner = addCell(inner, 'table__cell table__cell_sidebar', `Week ${week}`)
     
-        for (const { dayOfWeek, value } of days) {
+        for (const { dayOfWeek, days } of data) {
             const isToday = new Date().getDate() === value;
-            const isWeekend = dayOfWeek ===  0 || dayOfWeek === 6; 
+            const isWeekend = dayOfWeek ===  1 || dayOfWeek === 7; 
             const isAlternate = week % 2 === 0
             
                         let classString = ''
