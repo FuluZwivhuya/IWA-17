@@ -19,8 +19,7 @@ const getDaysInMonth = (date) => new Date(date.getFullYear(), date.getMonth() + 
 
 // Only edit below 
 
-console.log(MONTHS.length);//test
-
+console.log(MONTHS.length+1);
 const createArray = (length) => {
     const result = []
 
@@ -30,17 +29,16 @@ const createArray = (length) => {
 
     return result
 }
-console.log(createArray)
 
  const createData = () => {
     const current = new Date()
-    current.setDate(31);
+    current.setDate(1);
 
-    const startDay = current.getDate()
+    const startDay = current.get()
     const daysInMonth = getDaysInMonth(current)
 
-    const weeks = createArray(5)
-    const days = (31)
+    const weeks = createArray(5);
+    const days =(7);
     const result = []
 
     for (const weekIndex of weeks) {
@@ -49,7 +47,7 @@ console.log(createArray)
             days: []
         })
 
-        for (const dayIndex = 0; dayIndex <= 7; dayIndex++) {
+        for (const dayIndex=0; dayIndex<7; dayIndex++) {
             const day = (dayIndex - startDay) + (weekIndex * 7) + 1
             const isValid = day > 0 && day <= daysInMonth
 
@@ -84,18 +82,18 @@ const addCell = (existing, classString, value) => {
     
         for (const { dayOfWeek, value } of days) {
             const isToday = new Date().getDate() === value;
-            const isWeekend = dayOfWeek ===  0|| dayOfWeek === 7; 
+            const isWeekend = dayOfWeek ===  0 || dayOfWeek === 6; 
             const isAlternate = week % 2 === 0
             
                         let classString = ''
 
-            if (isToday) classString = `${table__cell_today} table__cell_`;
-            if (isWeekend) classString = `${table__cell_weekend} table__cell_`;
-            if (isAlternate) classString = `${table__cell_alternate} table__cell_`;
-            inner = addCell()
+            if (isToday) classString = `${isToday} table__cell_`;
+            if (isWeekend) classString = `${isWeekend} table__cell_`;
+            if (isAlternate) classString = `${isAlternate} table__cell_`;
+            inner = addCell(inner, classString.trim(), value === '' ? '&nbsp;' : value);
         }
 
-        result = `
+        result += `
             ${result}
             <tr>${inner}</tr>
         `
@@ -104,7 +102,6 @@ const addCell = (existing, classString, value) => {
     return result
 
     }
-    let
 
 // Only edit above
 
@@ -113,4 +110,3 @@ document.querySelector('[data-title]').innerText = `${MONTHS[current.getMonth()]
 
 const data = createData()
 document.querySelector('[data-content]').innerHTML = createHtml(data)
-
